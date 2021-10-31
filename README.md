@@ -12,4 +12,5 @@ you will need to install following dependencies:
 * `-n|--name` set video name. default='video.avi'
 * `-s|--size` set video size, example: 960x720', default='960x720'
 * `-f|--fps` set how many pictures should be present in one frame', default='0.15'
+* `-a|--audio` add background audio file', default=None
 

@@ -2,14 +2,16 @@
 import os
 import cv2
 import argparse
+import moviepy.editor as mpe
 
 # parse arguments
 parser = argparse.ArgumentParser(description='Create slideshow from images')
 parser.add_argument('-i', '--input_directory', help='set input dir with images', default='~/Pictures')
 parser.add_argument('-o', '--output_directory', help='set output directory for video', default='~/Videos')
-parser.add_argument('-n', '--name', help='set video name', default='video.avi')
+parser.add_argument('-n', '--name', help='set video name', default='video.mp4')
 parser.add_argument('-s', '--size', help='set video size, example: 960x720', default='960x720')
 parser.add_argument('-f', '--fps', help='set how many pictures should be present in one frame', default='0.15')
+parser.add_argument('-a', '--audio', help='add audio to background', default=None)
 
 args = parser.parse_args()
 
@@ -41,3 +43,11 @@ for image in images:
 
 video.release()
 
+if args.audio is not None:
+    vid = args.output_directory + args.name
+    audio = mpe.AudioFileClip(args.audio)
+    clip = mpe.VideoFileClip(vid)
+    loop = mpe.afx.audio_loop(audio, duration=clip.duration)
+    final_clip = clip.set_audio(loop)
+    os.remove(vid)
+    final_clip.write_videofile(args.name)
